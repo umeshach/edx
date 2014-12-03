@@ -56,6 +56,6 @@ This course is intended to have the same “punch” as a typical introductory u
 * Goodness-of-Fit
 * Test-of-Independence
 
-# Week Eleven: Hypothesis Testing (More Than Two Group Means)
+## Week Eleven: Hypothesis Testing (More Than Two Group Means)
 * The ANOVA
 * One-way ANOVA
