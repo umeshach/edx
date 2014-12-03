@@ -1,16 +1,22 @@
-# Install (if necessary) and load SBSFoundations library
-if ("SBSFoundations" %in% installed.packages()[,1]==F) {
-    install.packages("SBSFoundations")
-}
-
-library("SBSFoundations")
-
 # Set working directory
 if (Sys.info()[4]=="SSAI-0102-HP") {
     setwd("~/edX/Foundations of Data Analysis [University of Texas-Austin]/Week 02 - Univariate Descriptive Statistics")
 } else {
     print("... manually set your working directory ...")
 }
+
+
+# Install (if necessary) and load SBSFoundations library
+if (file.exists("SDSFoundations_1.1.zip")==F) {
+    url <- "https://preview.edx.org/c4x/UTAustinX/UT.7.01x/asset/SDSFoundations_1.1.zip"
+    download.file(url,destfile="SDSFoundations_1.1.zip")
+}
+
+if ("SDSFoundations" %in% installed.packages()[,1]==F) {
+    install.packages("SDSFoundations_1.1.zip",repos=NULL)
+}
+
+library("SDSFoundations")
 
 # Download AnimalData.csv and read in data set
 if (file.exists("./data/AnimalData.csv")==F) {
