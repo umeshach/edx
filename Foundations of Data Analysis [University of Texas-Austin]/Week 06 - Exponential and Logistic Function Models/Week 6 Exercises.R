@@ -77,7 +77,7 @@ tripleFit(us_select$time, us_select$internet.mil)
 # How many internet users would the US have had in 2012 if you had used the original exponential model?
 expFitPred(us_select_10$time, us_select_10$internet.mil, 22)
 
-## Lab
+## Lab 6: Worldwide Trends in Internet Usage
 # The World Bank is a data collection of information on all the world???s countries.
 # Data is collected by country, and include items such as total population, CO2
 # emissions, and the number of mobile device subscriptions. We will examine some
@@ -91,10 +91,6 @@ expFitPred(us_select_10$time, us_select_10$internet.mil, 22)
 # since 1990.  Then answer the question:  Does income level have an impact on the
 # speed with which a country adopts use of the internet? 
 
-# 1. Create a variable that represents proportion of the population using the
-# internet. (internet users divided by population).
-# 2. Create a subset of the data that only contains data from 1990 onward.
-# 3. Create a new variable that is "years since 1990". 
 bd <- subset(world,Country %in% c('Denmark','Belarus'))
 bd$prop.internet <- bd$internet.users / bd$population
 bd_select <- subset(bd,year >= 1990)
@@ -106,8 +102,88 @@ dnk <- subset(bd_select,Country == 'Denmark')
 
 # 5. Determine the best-fitting model (exponential or logistic) for internet usage
 # in each country from 1990 onward.
+expFit(dnk$time,dnk$prop.internet)
+logisticFit(dnk$time,dnk$prop.internet)
+
 expFit(blr$time,blr$prop.internet)
 logisticFit(blr$time,blr$prop.internet)
 
-expFit(dnk$time,dnk$prop.internet)
-logisticFit(dnk$time,dnk$prop.internet)
+# Using the logistic model equations from your analysis, calculate the YEAR that 10% of the population in each country would be using the internet.
+# Denmark:
+-(log10(0.89663-.1)-log10(308.8345*0.1))/log10(1.73124)
+# Belarus:
+-(log10(0.8987-.1)-log10(422.4322*0.1))/log10(1.31884)
+
+# Using the logistic model equations from your analysis, calculate the YEAR that 80% of the population in each country would be using the internet.
+# Denmark:
+-(log10(0.89663-.8)-log10(308.8345*0.8))/log10(1.73124)
+# Belarus:
+-(log10(0.8987-.8)-log10(422.4322*0.8))/log10(1.31884)
+
+## Problem Set
+# Question 1
+# How has mobile phone usage in Brazil changed since 1995?
+bz <- subset(world,Country %in% c('Brazil'))
+bz_select <- subset(bz,year >= 1995)
+bz_select$time <- bz_select$year - min(bd_select$year)
+
+# 1a. Find the number of mobile users in Brazil (in millions) in 2000, using R. (Round to 2 decimal places.)
+round(subset(bz_select,year==2000,select=mobile.users)/1000000,2)
+
+# 1b. In what year did Brazil first record more than 100 million mobile users?
+subset(bz_select,mobile.users>=100000000,select=year)[1,]
+
+# 1c. Generate a scatterplot and fit a linear, exponential and logistic model to the data. Which model best describes the increase in mobile users in Brazil since 1995?
+tripleFit(bz_select$time,bz_select$mobile.users)
+
+
+# 1d. What proportion of the variation in mobile users is explained by years since 1995 in the best-fitting model? (Round to 3 decimal places.)
+round(logisticFit(bz_select$time,bz_select$mobile.users)$r_sq,3)
+
+# 1e. Using the best-fitting model, predict the number of mobile users (in millions) in Brazil in 2025. (Round to zero decimal places.)
+round(logisticFitPred(bz_select$time,bz_select$mobile.users,2025-1995)/1000000,0)
+
+# Question 2
+# 
+# Records at the Center for Disease Control show that the total number of flu cases in Spring, 2009 looked like this:
+
+# 2a. Looking at the raw data, what is the rate of change in flu cases from April 30 to May 1? (Report as a proportion rounded to 2 decimal places.)
+round((367-257)/257,2)
+
+# 2b. What is the growth rate for the flu, according to the exponential model? (Report as a proportion rounded to 2 decimal places.)
+
+# 2c. Predict the number of cases of flu on Day 14 (when "Day" is equal to 14), using the exponential model. (Round to zero decimal places.)
+round(76.64*1.46**14,0)
+
+# 2d. Using the logistic model, predict the total number of flu cases on Day 14. (Round to zero decimal places.)
+round(3273.31/(1+(43.59*1.57**-14)),0)
+
+# 2e. The actual number of flu cases on Day 14 was 4,379. Find the residual of the exponential model prediction. (Round to zero decimal places.)
+4379-round(76.64*1.46**14,0)
+
+# 2f. What is the residual of the logistic model prediction for Day 14? (Round to zero decimal places.)
+4379-round(3273.31/(1+(43.59*1.57**-14)),0)
+
+# Question 3
+# 3.  Yellowstone National Park began a project to restore its native wolf population in the mid 1990's. Below are the number of wolves soon after the start of the project:
+
+# 3a. Researchers fit a linear model to the wolf data. Using this model, how many wolves were being added to the park each year? (Round to zero decimal places.)
+x <- c(1,3)
+y <- c(25,45)
+linFit(x,y)
+
+# 3c. Another researcher assumed that the wolves would experience exponential growth because there were no predators. He fit an exponential model to this data. What is the growth factor for his model? (Round to 2 decimal places.)
+round(expFit(x,y)$b,2)
+
+# 3d. What is the annual growth rate of these wolves each year, according to this model? (Report as a proportion rounded to 2 decimal places.)
+round(expFit(x,y)$b-1,2)
+
+# 3e. Assuming exponential growth, find the initial number of wolves when the project began. (Round to zero decimal places.)
+round(expFitPred(x,y,0),0)
+
+# 3f. By 2002, there were 147 wolves in Yellowstone Park. Which model was determined to fit the data better?
+147-linFitPred(x,y,7)
+147-expFitPred(x,y,7) #therefore, exponential
+
+# 3g. Using the best-fitting model, how many years must pass before there are more than 325 wolves in Yellowstone? (Round to zero decimal places.)
+round((log10(325)-log10(18.6339))/log10(1.34164),0)
