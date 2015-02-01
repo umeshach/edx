@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Week 8: Pre-lab, Lab, and Problem Set
 
 
@@ -144,4 +143,4 @@ round((861-900)/(59/sqrt(7)),3)
 
 # 3e. What is the t-critical value, assuming ??=0.05?
 -qt(.95,6)
->>>>>>> a3a42e6d28b1219e68c0c29cb35ae04ecea4e342
+
