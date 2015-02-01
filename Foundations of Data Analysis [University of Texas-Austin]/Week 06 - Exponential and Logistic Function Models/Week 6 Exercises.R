@@ -187,3 +187,17 @@ round(expFitPred(x,y,0),0)
 
 # 3g. Using the best-fitting model, how many years must pass before there are more than 325 wolves in Yellowstone? (Round to zero decimal places.)
 round((log10(325)-log10(18.6339))/log10(1.34164),0)
+
+# Question 4
+# 
+# 4.  A group of hedgehogs were released in the south???Austin area. Each year, the size of the population was recorded. Their population growth over time was modeled with a logistic growth curve. The model fit was 0.972.
+# Here are the model parameters: 
+# C = 2,000
+# a = 152.10
+# b = 2.17
+
+# 4c. How many years had passed when the population growth rate began to slow down? (Round to 1 decimal place.)
+round((log10(152.1)/log10(2.17)),1)
+
+# 4d. The hedgehogs were released in South Austin in 2001. How many hedgehogs were living in South Austin by 2010, according to the model? (Round to zero decimal places.)
+round(2000/(1+152.1*2.17**-9),0)
